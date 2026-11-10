@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Contribution Painter</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <h1>GitHub Contribution Painter</h1>
+    <span class="badge">v2.0</span>
+  </div>
+  <div class="topbar-right">
+    <select class="lang-select" id="langSelect">
+      <option value="en-US">English</option>
+      <option value="ru-RU">Русский</option>
+      <option value="uk-UA">Українська</option>
+      <option value="kk-KZ">Қазақша</option>
+      <option value="cs-CZ">Čeština</option>
+      <option value="nl-NL">Nederlands</option>
+      <option value="sv-SE">Svenska</option>
+      <option value="de-DE">Deutsch</option>
+      <option value="pl-PL">Polski</option>
+      <option value="fr-FR">Français</option>
+      <option value="zh-CN">中文</option>
+      <option value="ja-JP">日本語</option>
+    </select>
+    <a class="profile-link" href="https://github.com/ayushcmd" target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      OstinUA
+    </a>
+  </div>
+</div>
+
+<div class="container">
+<div class="main">
+
+  <div class="card">
+    <div class="card-title" data-i18n="settings">Settings</div>
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="token_label">GitHub Token</label>
+        <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+        <div class="hint" id="hintToken">
+          <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" rel="noopener noreferrer">Create token</a> — check the <b>repo</b> scope.
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="repo_label">Repository</label>
+        <input type="text" id="repo" placeholder="username/repo-name">
+        <div class="hint" data-i18n="repo_hint">Must exist and have at least one commit (README).</div>
+      </div>
+    </div>
+    <div class="field-row" style="margin-top:10px">
+      <div class="field">
+        <label data-i18n="email_label">Email (same as on GitHub)</label>
+        <input type="text" id="email" placeholder="you@example.com">
+        <div class="hint" id="hintEmail">
+          <a href="https://github.com/settings/emails" target="_blank" rel="noopener noreferrer">Check email</a> — must match, otherwise the graph won't update.
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="gitname_label">Name (git)</label>
+        <input type="text" id="gitname" placeholder="Your Name">
+      </div>
+      <div class="field">
+        <label data-i18n="branch_label">Branch</label>
+        <input type="text" id="branch" value="main">
+      </div>
+      <div class="field">
+        <label data-i18n="mult_label">Commit multiplier</label>
+        <select id="multiplier">
+          <option value="1" data-i18n="mult_1">×1 — minimum</option>
+          <option value="3">×3</option>
+          <option value="5" selected data-i18n="mult_5">×5 — recommended</option>
+          <option value="10" data-i18n="mult_10">×10 — saturated</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-i18n="range_label">Commit spread</label>
+        <select id="commitSpread">
+          <option value="off" data-i18n="range_off">Exact count</option>
+          <option value="plus2" data-i18n="range_plus2">Random +0..2 per day</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="year_title">Year</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <select id="selYear" style="width:120px"></select>
+      <span class="hint" style="margin:0" data-i18n="year_hint">The graph covers the entire selected year</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="editor_title">Editor</div>
+    <div class="legend">
+      <span class="legend-label" data-i18n="intensity">Intensity:</span>
+      <div class="swatch sel" data-level="0" style="background:#21262d" title="Empty (0)"></div>
+      <div class="swatch" data-level="1" style="background:#0D4429" title="Level 1"></div>
+      <div class="swatch" data-level="2" style="background:#016C31" title="Level 2"></div>
+      <div class="swatch" data-level="3" style="background:#26A641" title="Level 3"></div>
+      <div class="swatch" data-level="4" style="background:#39D353" title="Level 4"></div>
+      <div class="swatch" data-level="5" style="background:#f39c12" title="Random 0-4"></div>
+      <span class="legend-key" data-i18n="legend_hint">keys 0–5 &nbsp;|&nbsp; click and drag</span>
+    </div>
+    <div class="graph-wrap">
+      <div class="day-labels">
+        <span></span><span>Mon</span><span></span><span>Wed</span>
+        <span></span><span>Fri</span><span></span>
+      </div>
+      <div class="graph-scroll">
+        <div class="month-row" id="months"></div>
+        <div class="graph" id="graph"></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span data-i18n="days_painted">Days painted:</span> <b id="sDays">0</b></div>
+      <div class="stat"><span data-i18n="commits">Commits:</span> <b id="sCommits">0</b></div>
+      <div class="stat"><span data-i18n="period">Period:</span> <b id="sPeriod">—</b></div>
+    </div>
+    <div class="btn-row">
+      <button class="danger" id="clearBtn" data-i18n="btn_clear">Clear</button>
+      <button id="fillBtn" data-i18n="btn_fill">Fill all</button>
+      <label class="fill-percent-control" for="fillPercent">
+        <span>Fill %</span>
+        <input id="fillPercent" type="text" value="100%" inputmode="decimal" aria-label="Fill percentage" />
+      </label>
+      <button class="primary" id="pushBtn" data-i18n="btn_push">▶ Apply to GitHub</button>
+    </div>
+    <div class="progress" id="progress">
+      <div class="bar-wrap"><div class="bar" id="bar"></div></div>
+      <div class="log" id="log"></div>
+    </div>
+    <div class="status-bar" id="statusBar"></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <a class="footer-link star" href="https://github.com/Readmify/contribution-painter" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+        </svg>
+        <span data-i18n="footer_star">Star on GitHub</span>
+      </a>
+      <a class="footer-link" href="https://github.com/Readmify/contribution-painter/issues" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+          <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/>
+        </svg>
+        <span data-i18n="footer_issues">GitHub Issues</span>
+      </a>
+      <a class="footer-link" href="https://github.com/Readmify/contribution-painter/wiki" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M1.75 1h8.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0110.25 10H7.061l-2.574 2.573A1.458 1.458 0 012 11.543V10h-.25A1.75 1.75 0 010 8.25v-5.5C0 1.784.784 1 1.75 1zM1.5 2.75v5.5c0 .138.112.25.25.25h1a.75.75 0 01.75.75v2.19l2.72-2.72a.749.749 0 01.53-.22h3.5a.25.25 0 00.25-.25v-5.5a.25.25 0 00-.25-.25h-8.5a.25.25 0 00-.25.25zm13 2a.25.25 0 00-.25-.25h-.5a.75.75 0 010-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0114.25 12H14v1.543a1.458 1.458 0 01-2.487 1.03L9.22 12.28a.749.749 0 111.06-1.06l2.22 2.22v-2.19a.75.75 0 01.75-.75h.25a.25.25 0 00.25-.25v-5.5z"/>
+        </svg>
+        readme-SVG / contribution-painter-wiki
+      </a>
+    </div>
+    <div class="footer-right">
+      <span class="footer-text" data-i18n="footer_thanks">If this tool saved you time — a ⭐ means a lot!</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+  <script src="js/i18n/index.js"></script>
+  <script src="js/i18n/en-US.js"></script>
+  <script src="js/i18n/ru-RU.js"></script>
+  <script src="js/i18n/uk-UA.js"></script>
+  <script src="js/i18n/kk-KZ.js"></script>
+  <script src="js/i18n/cs-CZ.js"></script>
+  <script src="js/i18n/nl-NL.js"></script>
+  <script src="js/i18n/sv-SE.js"></script>
+  <script src="js/i18n/de-DE.js"></script>
+  <script src="js/i18n/pl-PL.js"></script>
+  <script src="js/i18n/fr-FR.js"></script>
+  <script src="js/i18n/zh-CN.js"></script>
+  <script src="js/i18n/ja-JP.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
