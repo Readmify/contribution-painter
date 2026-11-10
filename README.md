@@ -217,5 +217,3 @@ python3 -m http.server 8080
 - `GH_MODELS_TOKEN` – token for model endpoint authentication.
 - `ALLOWED_USER` – optional actor gate for execution.
 
-
-If you find this tool useful, consider leaving a ⭐ on GitHub or supporting the author directly.
